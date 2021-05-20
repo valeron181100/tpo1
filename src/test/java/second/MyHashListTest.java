@@ -46,4 +46,10 @@ public class MyHashListTest {
         assertEquals(qwerBucketIndex, wasdBucketIndex);
     }
 
+    @Test
+    @DisplayName("тест на хеширование")
+    public void testHashStrings() {
+        assertEquals(134974689, MyHashList.hashString("qwerty"));
+    }
+
 }

@@ -50,7 +50,7 @@ public class MyHashList {
         return ctr;
     }
 
-    private static int hashString(String str) {
+    public static int hashString(String str) {
         int sum = 0;
         for (int i = str.length() - 1; i >= 0 ; i--) {
             sum += str.charAt(i);
