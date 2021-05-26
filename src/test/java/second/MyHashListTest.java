@@ -16,6 +16,7 @@ public class MyHashListTest {
 
     @Before
     public void initList() {
+        list.setLogger(log -> System.out.flush());
         list.add("q");
         list.add("qw");
         list.add("qwe");
@@ -27,23 +28,50 @@ public class MyHashListTest {
     @Test
     @DisplayName("тест на добавление пустой строки")
     public void testAddEmptyString() {
-        assertFalse(list.add(""));
+        String expected = "add: operation began\n" +
+                "add: value is null or empty\n";
+        String realOutput = "";
+        StringBuilder stringBuilder = new StringBuilder();
+        list.setLogger( log -> stringBuilder.append(log).append("\n"));
+        list.add("");
+        realOutput = stringBuilder.toString();
+        assertEquals(expected, realOutput);
     }
 
     @Test
     @DisplayName("тест на добавление null")
     public void testAddNothing() {
-        assertFalse(list.add(null));
+        String expected = "add: operation began\n" +
+                "add: value is null or empty\n";
+        String realOutput = "";
+        StringBuilder stringBuilder = new StringBuilder();
+        list.setLogger( log -> stringBuilder.append(log).append("\n"));
+        list.add(null);
+        realOutput = stringBuilder.toString();
+        assertEquals(expected, realOutput);
     }
 
     @Test
     @DisplayName("тест на разрешение коллизий")
     public void testResolveCollisions() {
+        String expected = "add: operation began\n" +
+                "add: hash of the given string = 440711\n" +
+                "add: bucket index = 11\n" +
+                "add: value was added\n" +
+                "find: hash of the given string = 440711\n" +
+                "find: bucket index = 11\n" +
+                "find: value was found in bucket with index = 11\n" +
+                "find: hash of the given string = 494817\n" +
+                "find: bucket index = 11\n" +
+                "find: value was found in bucket with index = 11\n";
+        String realOutput = "";
+        StringBuilder stringBuilder = new StringBuilder();
+        list.setLogger( log -> stringBuilder.append(log).append("\n"));
         list.add("wasd");
-        int wasdBucketIndex = list.find("wasd");
-        int qwerBucketIndex = list.find("qwer");
-        System.out.println(list.size());
-        assertEquals(qwerBucketIndex, wasdBucketIndex);
+        list.find("wasd");
+        list.find("qwer");
+        realOutput = stringBuilder.toString();
+        assertEquals(expected, realOutput);
     }
 
     @Test
